@@ -321,14 +321,14 @@ def main():
 
     torch.backends.cudnn.benchmark = args.cudnn_benchmark
 
-    print()
-    print('Arguments:')
-    for k, v in vars(args).items():
-        print(f'  {k}: {v}')
-    print()
+    # print()
+    # print('Arguments:')
+    # for k, v in vars(args).items():
+    #     print(f'  {k}: {v}')
+    # print()
 
     if distributed_run:
-        init_distributed(args, args.world_size, args.local_rank)
+        init_distributed(args, args.world_size, unk_args.local_rank)
     else:
         if args.trainloader_repeats > 1:
             print('WARNING: Disabled --trainloader-repeats, supported only for'
