@@ -316,7 +316,7 @@ def main():
 
     parser = models.parse_model_args('FastPitch', parser)
     args, unk_args = parser.parse_known_args()
-    if len(unk_args) > 0:
+    if len(unk_args) > 1:
         raise ValueError(f'Invalid options {unk_args}')
 
     torch.backends.cudnn.benchmark = args.cudnn_benchmark
