@@ -591,7 +591,7 @@ refer to the [blogpost](https://blogs.nvidia.com.tw/2022/06/20/cht-bilingual-spe
    ```bash
    NUM_GPUS=<available_gpus> GRAD_ACCUMULATION=<number> bash scripts/mandarin_chinese/train.sh
    ```
-   Adjust the variables to satisfy `$NUM_GPUS x $GRAD_ACCUMULATION = 256`.
+   Adjust the variables to satisfy `$NUM_GPUS x $GRAD_ACCUMULATION x 16 = 256`. (16 from default batch_size in the base train script).
 
    The model will be trained for 1000 epochs. Note that we have disabled mixed-precision
    training, as we found it unstable at times on this dataset.
