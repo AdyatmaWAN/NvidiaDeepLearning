@@ -180,8 +180,8 @@ def parse_args(parser):
                        help='Maximum mel frequency')
 
     dist = parser.add_argument_group('distributed setup')
-    dist.add_argument('--local_rank', type=int, default=os.getenv('LOCAL_RANK', 0),
-                      help='Rank of the process for multiproc; do not set manually')
+    # dist.add_argument('--local_rank', type=int, default=os.getenv('LOCAL_RANK', 0),
+    #                   help='Rank of the process for multiproc; do not set manually')
     dist.add_argument('--world_size', type=int, default=os.getenv('WORLD_SIZE', 1),
                       help='Number of processes for multiproc; do not set manually')
     return parser
@@ -288,6 +288,10 @@ def main():
                                      allow_abbrev=False)
     parser = parse_args(parser)
     args, _ = parser.parse_known_args()
+
+    # Read local rank from environment variable
+    local_rank = int(os.getenv('LOCAL_RANK', 0))
+    args.local_rank = local_rank
 
     if args.p_arpabet > 0.0:
         cmudict.initialize(args.cmudict_path, args.heteronyms_path)
