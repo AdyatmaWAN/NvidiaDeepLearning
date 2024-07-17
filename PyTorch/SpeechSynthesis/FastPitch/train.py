@@ -366,7 +366,7 @@ def main():
 
     if distributed_run:
         model = DistributedDataParallel(
-            model, device_ids=[args.local_rank], output_device=args.local_rank,
+            model, device_ids=[unk_args.local_rank], output_device=unk_args.local_rank,
             find_unused_parameters=True)
 
     train_state = {'epoch': 1, 'total_iter': 1}
@@ -385,7 +385,7 @@ def main():
 
     collate_fn = TTSCollate()
 
-    if args.local_rank == 0:
+    if unk_args.local_rank == 0:
         prepare_tmp(args.pitch_online_dir)
 
     trainset = TTSDataset(audiopaths_and_text=args.training_files, **vars(args))
