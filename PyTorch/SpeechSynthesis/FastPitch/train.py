@@ -385,7 +385,7 @@ def main():
 
     collate_fn = TTSCollate()
 
-    if unk_args.local_rank == 0:
+    if unk_args[0] == 0:
         prepare_tmp(args.pitch_online_dir)
 
     trainset = TTSDataset(audiopaths_and_text=args.training_files, **vars(args))
