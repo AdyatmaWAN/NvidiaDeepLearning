@@ -219,8 +219,6 @@ class TTSDataset(torch.utils.data.Dataset):
         energy = torch.norm(mel.float(), dim=0, p=2)
         attn_prior = self.get_prior(index, mel.shape[1], text.shape[0])
 
-        if pitch.size(-1) != mel.size(-1):
-            print(f'Pitch and mel mismatch: {pitch.size(-1)} vs {mel.size(-1)}')
         assert pitch.size(-1) == mel.size(-1)
 
         # No higher formants?
