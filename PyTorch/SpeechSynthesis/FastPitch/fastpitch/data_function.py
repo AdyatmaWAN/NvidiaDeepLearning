@@ -219,7 +219,7 @@ class TTSDataset(torch.utils.data.Dataset):
         energy = torch.norm(mel.float(), dim=0, p=2)
         attn_prior = self.get_prior(index, mel.shape[1], text.shape[0])
 
-        if pitch.size(-1) > mel.size(-1):
+        if pitch.size(-1) < mel.size(-1):
             print(pitch.size(-1))
             print(mel.size(-1))
             print()
