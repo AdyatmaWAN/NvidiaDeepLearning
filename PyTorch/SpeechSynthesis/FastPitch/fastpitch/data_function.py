@@ -237,8 +237,7 @@ class TTSDataset(torch.utils.data.Dataset):
             if sampling_rate != self.stft.sampling_rate:
                 # resampler = torchaudio.transforms.Resample(orig_freq=sampling_rate, new_freq=self.stft.sampling_rate)
                 # audio = resampler(audio)
-                print(len(audio))
-                num_samples = int(audio.size(1) * self.stft.sampling_rate / sampling_rate)
+                num_samples = int(len(audio) * self.stft.sampling_rate / sampling_rate)
                 audio = signal.resample(audio.numpy(), num_samples)
                 audio = torch.from_numpy(audio)
                 sampling_rate = self.stft.sampling_rate
