@@ -124,10 +124,11 @@ class TacotronSTFT(torch.nn.Module):
         -------
         mel_output: torch.FloatTensor of shape (B, n_mel_channels, T)
         """
-        print(y.shape)
-        print(torch.min(y.data))
-        print(torch.max(y.data))
-        print()
+
+        if torch.min(y.data) < -1 or torch.max(y.data) > 1:
+            print(torch.min(y.data), " ", torch.max(y.data))
+            y = normalize_audio(y)
+
         assert(torch.min(y.data) >= -1)
         assert(torch.max(y.data) <= 1)
 
@@ -136,3 +137,7 @@ class TacotronSTFT(torch.nn.Module):
         mel_output = torch.matmul(self.mel_basis, magnitudes)
         mel_output = self.spectral_normalize(mel_output)
         return mel_output
+
+def normalize_audio(y):
+    """Normalize audio tensor to be within the range [-1, 1]."""
+    return y / torch.max(torch.abs(y))
