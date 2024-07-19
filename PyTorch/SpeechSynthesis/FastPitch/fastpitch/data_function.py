@@ -34,8 +34,7 @@ import librosa
 import numpy as np
 import torch
 import torch.nn.functional as F
-import torchaudio
-from scipy import ndimage
+from scipy import ndimage, signal
 from scipy.stats import betabinom
 
 import common.layers as layers
@@ -236,8 +235,12 @@ class TTSDataset(torch.utils.data.Dataset):
         if not self.load_mel_from_disk:
             audio, sampling_rate = load_wav_to_torch(filename)
             if sampling_rate != self.stft.sampling_rate:
-                resampler = torchaudio.transforms.Resample(orig_freq=sampling_rate, new_freq=self.stft.sampling_rate)
-                audio = resampler(audio)
+                # resampler = torchaudio.transforms.Resample(orig_freq=sampling_rate, new_freq=self.stft.sampling_rate)
+                # audio = resampler(audio)
+                print(audio.size(1))
+                num_samples = int(audio.size(1) * self.stft.sampling_rate / sampling_rate)
+                audio = signal.resample(audio.numpy(), num_samples)
+                audio = torch.from_numpy(audio)
                 sampling_rate = self.stft.sampling_rate
                 # raise ValueError("{} SR doesn't match target {} SR".format(
                 #     sampling_rate, self.stft.sampling_rate))
