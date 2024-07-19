@@ -126,7 +126,7 @@ class TacotronSTFT(torch.nn.Module):
         """
 
         if torch.min(y.data) < -1 or torch.max(y.data) > 1:
-            print(torch.min(y.data), " ", torch.max(y.data))
+            # print(torch.min(y.data), " ", torch.max(y.data))
             y = normalize_audio(y)
 
         assert(torch.min(y.data) >= -1)
