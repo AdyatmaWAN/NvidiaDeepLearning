@@ -66,7 +66,7 @@ def main():
 
     with open(args.transcripts) as f:
         # A dict of ID:transcript pairs
-        transcripts = dict(line.replace("\ufeff", "").replace("－", "-").strip().split(' ', 1)
+        transcripts = dict(line.replace("\ufeff", "").replace("\t", " ").replace("－", "-").strip().split(' ', 1)
                            for line in f)
     # transcripts = {id_.replace("com_DL", "com_SF"): text.lower()
     #                for id_, text in transcripts.items()}
