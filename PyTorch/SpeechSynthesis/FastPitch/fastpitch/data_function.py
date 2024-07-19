@@ -99,6 +99,12 @@ def estimate_pitch(wav, mel_len, method='pyin', normalize_mean=None,
         pitch_mel = torch.from_numpy(pitch_mel).unsqueeze(0)
         pitch_mel = F.pad(pitch_mel, (0, mel_len - pitch_mel.size(1)))
 
+        if mel_len != pitch_mel.size(1):
+            print()
+            print(mel_len)
+            print(pitch_mel.size())
+            print()
+
         if n_formants > 1:
             raise NotImplementedError
 
@@ -219,11 +225,11 @@ class TTSDataset(torch.utils.data.Dataset):
         energy = torch.norm(mel.float(), dim=0, p=2)
         attn_prior = self.get_prior(index, mel.shape[1], text.shape[0])
 
-        if pitch.size(-1) != mel.size(-1):
-            print()
-            print(pitch.size())
-            print(mel.size())
-            print()
+        # if pitch.size(-1) != mel.size(-1):
+        #     print()
+        #     print(pitch.size())
+        #     print(mel.size())
+        #     print()
 
         assert pitch.size(-1) == mel.size(-1)
 
