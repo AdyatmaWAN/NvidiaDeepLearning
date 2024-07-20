@@ -16,6 +16,6 @@ AMP=false  # FP32 training for better stability
 : ${DATASET_PATH:=data/jv_id_female}
 : ${TRAIN_FILELIST:=filelists/jv_fe_audio_pitch_text_train.txt}
 : ${VAL_FILELIST:=filelists/jv_fe_audio_pitch_text_val.txt}
-: ${OUTPUT_DIR:=./output_jv_fe}
+: ${OUTPUT_DIR:=./output_jv_fe_scratch}
 
 bash scripts/train.sh $ARGS "$@"
