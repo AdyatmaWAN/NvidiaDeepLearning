@@ -75,7 +75,7 @@ def main():
     ids = list(transcripts.keys())
     # val_ids, test_ids = train_test_split(ids, test_size=0.1, random_state=42)
     # train_ids, val_ids = train_test_split(val_ids, test_size=0.1, random_state=42)
-    _, test_ids = train_test_split(ids, test_size=0.1, random_state=42)
+    _, test_ids = train_test_split(ids, test_size=0.2, random_state=42)
     val_ids, test_ids = train_test_split(test_ids, test_size=0.5, random_state=42)
 
     val_ids_text = {id_: transcripts[id_] for id_ in val_ids}
