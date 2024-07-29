@@ -14,7 +14,7 @@ export PYTHONIOENCODING=utf-8
 echo "Extracting pitch..."
 python prepare_dataset.py \
     --wav-text-filelists filelists/jv_fe_audio_text.txt \
-    --n-workers 16 \
+    --n-workers 12 \
     --batch-size 1 \
     --dataset-path $DATA_DIR \
     --extract-pitch \
