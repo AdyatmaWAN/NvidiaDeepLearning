@@ -12,6 +12,6 @@ if [ ! -d ${DATA_DIR} ]; then
   echo "Downloading java_id_female ..."
   wget -q https://www.openslr.org/resources/41/jv_id_female.zip
   echo "Extracting java_id_female ..."
-  unzip java_id_female.zip -d data/
-  rm -f java_id_female.zip
+  unzip jv_id_female.zip -d data/
+  rm -f jv_id_female.zip
 fi
