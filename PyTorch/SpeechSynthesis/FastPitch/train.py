@@ -35,8 +35,10 @@ from itertools import cycle
 import numpy as np
 import torch
 import torch.distributed as dist
-import amp_C
-from apex.optimizers import FusedAdam, FusedLAMB
+# import amp_C
+# from apex.optimizers import FusedAdam, FusedLAMB
+import torch.optim as optim
+from torch_optimizer import Lamb  # Install torch_optimizer if you need LAMB
 from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data import DataLoader
 from torch.utils.data.distributed import DistributedSampler
@@ -277,10 +279,14 @@ def init_multi_tensor_ema(model, ema_model):
     return model_weights, ema_model_weights, ema_overflow_buf
 
 
-def apply_multi_tensor_ema(decay, model_weights, ema_weights, overflow_buf):
-    amp_C.multi_tensor_axpby(
-        65536, overflow_buf, [ema_weights, model_weights, ema_weights],
-        decay, 1-decay, -1)
+# def apply_multi_tensor_ema(decay, model_weights, ema_weights, overflow_buf):
+#     amp_C.multi_tensor_axpby(
+#         65536, overflow_buf, [ema_weights, model_weights, ema_weights],
+#         decay, 1-decay, -1)
+
+def apply_multi_tensor_ema(decay, model_weights, ema_weights):
+    # Assuming model_weights and ema_weights are PyTorch tensors
+    ema_weights.copy_((decay * model_weights) + ((1 - decay) * ema_weights))
 
 
 def main():
@@ -348,14 +354,13 @@ def main():
     model.pitch_mean[0] = args.pitch_mean
     model.pitch_std[0] = args.pitch_std
 
-    kw = dict(lr=args.learning_rate, betas=(0.9, 0.98), eps=1e-9,
-              weight_decay=args.weight_decay)
     if args.optimizer == 'adam':
-        optimizer = FusedAdam(model.parameters(), **kw)
+        optimizer = optim.AdamW(model.parameters(), **kw)  # Use AdamW
     elif args.optimizer == 'lamb':
-        optimizer = FusedLAMB(model.parameters(), **kw)
+        optimizer = Lamb(model.parameters(), **kw)
     else:
-        raise ValueError
+        raise ValueError("Unsupported optimizer: {}".format(args.optimizer))
+
 
     scaler = torch.cuda.amp.GradScaler(enabled=args.amp)
 
