@@ -354,6 +354,9 @@ def main():
     model.pitch_mean[0] = args.pitch_mean
     model.pitch_std[0] = args.pitch_std
 
+    kw = dict(lr=args.learning_rate, betas=(0.9, 0.98), eps=1e-9,
+              weight_decay=args.weight_decay)
+
     if args.optimizer == 'adam':
         optimizer = optim.AdamW(model.parameters(), **kw)  # Use AdamW
     elif args.optimizer == 'lamb':
